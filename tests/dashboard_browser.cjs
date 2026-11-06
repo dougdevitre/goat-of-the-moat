@@ -111,6 +111,7 @@ const path = require("node:path");
     await page.locator("#clear").click();
     assert.equal(await page.locator("#reportBody tbody tr").count(),0);
     await page.locator("#file").setInputFiles(filePath);
+    await page.waitForFunction(()=>document.querySelectorAll("#reportBody tbody tr").length===3 && document.querySelectorAll("#relationshipMap g.mapNode").length===3,{timeout:10000});
     assert.equal(await page.locator("#reportBody tbody tr").count(),3);
     assert.equal(await page.locator("#relationshipMap g.mapNode").count(),3);
     await page.emulateMedia({media:"print"});
@@ -122,5 +123,11 @@ const path = require("node:path");
     assert.match(await page.locator("#shareStatus").innerText(),/cleared/);
     assert.equal(errors.length,0,"Browser JavaScript errors: "+errors.join("; "));
     console.log("PASS: mobile browser flow, quick/full/classic, tour, sample, report, export, save/resume and reset.");
+  } catch(e) {
+    if(artifactDir){
+      try{await page.screenshot({path:path.join(artifactDir,"failure.png"),fullPage:true});}catch(_){}
+      try{fs.writeFileSync(path.join(artifactDir,"failure.txt"),String(e.stack||e)+"\nBrowser errors:\n"+errors.join("\n")+"\nURL: "+page.url()+"\n");}catch(_){}
+    }
+    throw e;
   } finally {await browser.close()}
 })().catch(e=>{console.error(e);process.exitCode=1});
