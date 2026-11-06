@@ -44,6 +44,16 @@ jobs:
           BASE_URL: http://127.0.0.1:8000
           QA_ARTIFACT_DIR: qa-artifacts
         run: node tests/dashboard_browser.cjs
+      - name: Print server diagnostics on failure
+        if: failure()
+        run: |
+          echo "=== Local HTTP server ==="
+          cat /tmp/goat-http.log || true
+          echo "=== Node / Python ==="
+          node --version
+          python --version
+          echo "=== Available QA artifacts ==="
+          find qa-artifacts -maxdepth 2 -type f -print 2>/dev/null || true
       - name: Upload mobile screenshots and print PDF
         if: always()
         uses: actions/upload-artifact@v4
