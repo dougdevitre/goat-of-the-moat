@@ -42,4 +42,13 @@ jobs:
       - name: Run browser acceptance
         env:
           BASE_URL: http://127.0.0.1:8000
+          QA_ARTIFACT_DIR: qa-artifacts
         run: node tests/dashboard_browser.cjs
+      - name: Upload mobile screenshots and print PDF
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-xx-browser-qa
+          path: qa-artifacts/
+          if-no-files-found: warn
+          retention-days: 14
