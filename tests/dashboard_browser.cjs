@@ -2,10 +2,14 @@
 // Example: python -m http.server 8000 & BASE_URL=http://127.0.0.1:8000 node tests/dashboard_browser.cjs
 const { chromium } = require("playwright");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 (async () => {
   const browser = await chromium.launch({headless:true});
   const page = await browser.newPage({viewport:{width:375,height:812},acceptDownloads:true});
   const errors=[];
+  const artifactDir=process.env.QA_ARTIFACT_DIR;
+  if(artifactDir)fs.mkdirSync(artifactDir,{recursive:true});
   page.on("pageerror",e=>errors.push(e.message));
   page.on("dialog",d=>d.accept());
   const url=(process.env.BASE_URL||"http://127.0.0.1:8000")+"/dashboard/";
@@ -14,6 +18,7 @@ const assert = require("node:assert/strict");
     for(const width of [320,375,768]){
       await page.setViewportSize({width,height:812});
       await page.goto(base+"/tools/",{waitUntil:"networkidle"});
+      if(artifactDir)await page.screenshot({path:path.join(artifactDir,"tools-"+width+".png"),fullPage:true});
       const menu=page.locator(".goat-menu-btn");
       assert.equal(await menu.isVisible(),true,"mobile menu visible at "+width);
       await menu.click();
@@ -28,6 +33,7 @@ const assert = require("node:assert/strict");
     await page.goto(base+"/tools/",{waitUntil:"networkidle"});
     assert.equal(await page.locator(".goat-menu-btn").isVisible(),false);
     assert.equal(await page.locator(".goat-desktop").isVisible(),true);
+    if(artifactDir)await page.screenshot({path:path.join(artifactDir,"tools-desktop-1280.png"),fullPage:true});
     await page.setViewportSize({width:375,height:812});
     await page.goto(url,{waitUntil:"networkidle"});
     await page.locator("#startQuick").click();
@@ -108,8 +114,10 @@ const assert = require("node:assert/strict");
     assert.equal(await page.locator("#reportBody tbody tr").count(),3);
     assert.equal(await page.locator("#relationshipMap g.mapNode").count(),3);
     await page.emulateMedia({media:"print"});
+    if(artifactDir)await page.pdf({path:path.join(artifactDir,"decision-integrity-report.pdf"),format:"Letter",printBackground:true});
     assert.equal(await page.locator("#reportBody").isVisible(),true,"report visible in print mode");
     await page.emulateMedia({media:"screen"});
+    if(artifactDir)await page.screenshot({path:path.join(artifactDir,"reports-mobile-375.png"),fullPage:true});
     await page.locator("#forgetSession").click();
     assert.match(await page.locator("#shareStatus").innerText(),/cleared/);
     assert.equal(errors.length,0,"Browser JavaScript errors: "+errors.join("; "));
