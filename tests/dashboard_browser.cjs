@@ -111,7 +111,7 @@ const path = require("node:path");
     await page.locator("#clear").click();
     assert.equal(await page.locator("#reportBody tbody tr").count(),0);
     await page.locator("#file").setInputFiles(filePath);
-    await page.waitForFunction(()=>document.querySelectorAll("#reportBody tbody tr").length===3 && document.querySelectorAll("#relationshipMap g.mapNode").length===3,{timeout:10000});
+    await page.waitForFunction(()=>document.querySelectorAll("#reportBody tbody tr").length===3 && document.querySelectorAll("#relationshipMap g.mapNode").length===3,null,{timeout:10000});
     assert.equal(await page.locator("#reportBody tbody tr").count(),3);
     assert.equal(await page.locator("#relationshipMap g.mapNode").count(),3);
     await page.emulateMedia({media:"print"});
