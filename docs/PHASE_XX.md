@@ -25,6 +25,10 @@ BASE_URL=http://127.0.0.1:8000 node tests/dashboard_browser.cjs
 
 The browser suite now tests exporting a populated integrity review as JSON, clearing it, re-importing the exported file, checking restored records and map nodes, and confirming the report remains visible in print media. These tests must pass in Chromium before the release gate is marked complete.
 
+## Visual QA artifacts
+
+The GitHub Actions browser job sets `QA_ARTIFACT_DIR=qa-artifacts` and uploads the `phase-xx-browser-qa` artifact even when the browser test fails. It includes screenshots at 320px, 375px, 768px, and 1280px, a mobile reports screenshot, and a US Letter decision integrity PDF when the test reaches that step. Artifacts are retained for 14 days. These are diagnostic outputs, **not evidence of a passing run**.
+
 ## Release criteria
 
 - [ ] GitHub Actions smoke/scoring job passed.
