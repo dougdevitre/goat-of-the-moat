@@ -46,4 +46,13 @@ assert(integrity.includes("function renderMap()"),"interactive relationship map"
 assert(integrity.includes("function showMapDetail("),"evidence drilldown");
 assert(!integrity.includes("localStorage")&&!integrity.includes("sessionStorage"),"no automatic local persistence");
 assert(!integrity.includes('fetch('),"no server submission");
-console.log("PASS: dashboard, decision integrity, neutral report, registry and static controls.");
+const nav=fs.readFileSync("assets/site.js","utf8");
+new vm.Script(nav,{filename:"assets/site.js"});
+assert(nav.includes("aria-expanded"),"mobile menu expanded state");
+assert(nav.includes("Escape"),"keyboard dismissal");
+assert(nav.includes("goatMobileDrawer"),"mobile drawer");
+assert(fs.readFileSync("assets/brand/crest.svg","utf8").includes("<svg"),"brand crest exists");
+for(const path of ["index.html","tools/index.html","tools/assessment/index.html","tools/follow-the-money/index.html","tools/influence-map/index.html","tools/evidence/index.html","tools/decision-integrity/index.html","tools/reports/index.html","methodology/index.html","ethics/index.html","help/index.html"]){const page=fs.readFileSync(path,"utf8");assert(page.includes("/assets/site.js"),"shared navigation missing "+path);assert(page.includes("/assets/brand/crest.svg"),"brand icon missing "+path)}
+assert(html.includes("/assets/site.js"),"evaluation navigation integrated");
+assert(integrity.includes("/assets/site.js"),"integrity navigation integrated");
+console.log("PASS: dashboard, integrity, branded pages, mobile navigation and 100-question registry.");
