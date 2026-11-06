@@ -7,7 +7,7 @@ const html=fs.readFileSync("dashboard/index.html","utf8");
 const script=html.match(/<script>([\s\S]*?)<\/script>/);
 assert(script,"inline application script exists");
 new vm.Script(script[1],{filename:"dashboard/index.html"});
-for(const id of ["startQuick","startFull","skipWizard","startTour","tourQuick","tourClassic","closeTour","tourFromWorkspace","loadSample","printReport","phase8","saveDevice","resumeDraft","export","importDraft","question","scoreGuide","scoreLevels","evidenceHelp","coverageGate"]){
+for(const id of ["startQuick","startFull","skipWizard","startTour","tourQuick","tourClassic","closeTour","tourFromWorkspace","loadSample","printReport","phase8","saveDevice","resumeDraft","export","importDraft","question","scoreGuide","scoreLevels","evidenceHelp","coverageGate","reportSummary","summaryContent","reportDimensions","dimensionComparison","reportAppendix","evidenceAppendix"]){
  assert(html.includes('id="'+id+'"'),"missing control "+id);
 }
 assert(html.includes("function phaseEight("),"Phase VIII executive intelligence present");
@@ -20,6 +20,9 @@ assert(html.includes('<fieldset'),"semantic rating group");
 assert(html.includes('class="skiplink"'),"skip to main content");
 assert(html.includes("function showTour()"),"optional onboarding guide");
 assert(html.includes("window.print()"),"print report action wired");
+assert(html.includes("function renderReport("),"report renderer exists");
+assert(html.includes("size:letter"),"US Letter print page");
+assert(html.includes("Evidence reference"),"evidence appendix column exists");
 assert(html.includes('mode==="quick"'),"quick assessment remains");
 assert(html.includes('mode==="classic"'),"skip wizard remains");
 assert(!html.includes('fetch("/api/'),"no backend endpoint");
