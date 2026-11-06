@@ -1,23 +1,15 @@
-# Judge workbench — local prototype
+# Dashboard modes
 
-Run from repository root:
+The deployed UI offers three entry points:
 
-```bash
-python -m http.server 8000
-```
+1. **Quick assessment:** 12 introductory questions, one per dimension, labeled indicative only.
+2. **Full guided evaluation:** 100 questions with one-at-a-time prompts, plain-language choices, evidence help, progress and results.
+3. **Skip wizard / classic dashboard:** direct access to the complete question set with dimension navigation and technical details.
 
-Visit http://localhost:8000/dashboard/
+Users can switch between guided and classic views without discarding ratings in the current tab. Each scored question requires a 0–5 rating, confidence A/B/C, and evidence reference. Missing or unverified evidence remains unscored. Export is JSON and must be completed before leaving the tab; no persistent storage or authenticated judge workflow exists.
 
-The dashboard loads the versioned 100-question registry and 12 dimension definitions, permits one provisional judge's scoring per question, requires a non-sensitive evidence reference and confidence A/B/C, calculates raw weighted points and coverage, and exports JSON. Entries exist **only in the current browser tab's memory** and disappear on refresh; export before leaving.
+Run locally from repository root: `python -m http.server 8000` and open `http://localhost:8000/dashboard/`.
 
-## Limitations
+## Important limitations
 
-- Not authenticated or multi-user; no server-side storage or encryption.
-- Evidence references are not verified and scores are not certified.
-- This is not a substitute for independent judges, calibration, recusal, evidence review, or formal eligibility checks.
-- No remote deployment has been performed.
-- Do not enter confidential records or personal data.
-
-## Production next steps
-
-Implement identity and role management, server-side validation, encrypted evidence registry, per-organization assessment lifecycle, reviewer recusal, immutable audit trail, and signed exports. Run usability and accessibility testing before production.
+This is a research prototype. It does not validate evidence truthfulness, provide secure persistence, or certify awards. The quick assessment is not a 1,000-point evaluation. Do not enter confidential evidence or personal data.
