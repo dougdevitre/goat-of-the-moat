@@ -21,3 +21,25 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Run synthetic example
         run: python -m goat_moat.demo
+
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install browser test dependency
+        run: npm install --no-save --no-package-lock playwright@1.58.2
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Serve static site
+        run: python -m http.server 8000 --bind 127.0.0.1 > /tmp/goat-http.log 2>&1 &
+      - name: Run browser acceptance
+        env:
+          BASE_URL: http://127.0.0.1:8000
+        run: node tests/dashboard_browser.cjs
