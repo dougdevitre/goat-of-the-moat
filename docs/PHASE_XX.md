@@ -21,6 +21,10 @@ python -m http.server 8000 --bind 127.0.0.1 &
 BASE_URL=http://127.0.0.1:8000 node tests/dashboard_browser.cjs
 ```
 
+## Added browser regression coverage
+
+The browser suite now tests exporting a populated integrity review as JSON, clearing it, re-importing the exported file, checking restored records and map nodes, and confirming the report remains visible in print media. These tests must pass in Chromium before the release gate is marked complete.
+
 ## Release criteria
 
 - [ ] GitHub Actions smoke/scoring job passed.
