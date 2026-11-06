@@ -7,13 +7,18 @@ const html=fs.readFileSync("dashboard/index.html","utf8");
 const script=html.match(/<script>([\s\S]*?)<\/script>/);
 assert(script,"inline application script exists");
 new vm.Script(script[1],{filename:"dashboard/index.html"});
-for(const id of ["startQuick","startFull","skipWizard","loadSample","printReport","phase8","saveDevice","resumeDraft","export","importDraft","question","scoreGuide","scoreLevels","evidenceHelp","coverageGate"]){
+for(const id of ["startQuick","startFull","skipWizard","startTour","tourQuick","tourClassic","closeTour","tourFromWorkspace","loadSample","printReport","phase8","saveDevice","resumeDraft","export","importDraft","question","scoreGuide","scoreLevels","evidenceHelp","coverageGate"]){
  assert(html.includes('id="'+id+'"'),"missing control "+id);
 }
 assert(html.includes("function phaseEight("),"Phase VIII executive intelligence present");
 assert(html.includes("function loadSyntheticSample("),"sample dataset generator present");
 assert(html.includes("SYNTHETIC-EXAMPLE-"),"sample evidence clearly synthetic");
 assert(html.includes("@media print"),"print styles present");
+assert(html.includes("prefers-reduced-motion"),"reduced motion support");
+assert(html.includes('role="progressbar"'),"accessible progress bar");
+assert(html.includes('<fieldset'),"semantic rating group");
+assert(html.includes('class="skiplink"'),"skip to main content");
+assert(html.includes("function showTour()"),"optional onboarding guide");
 assert(html.includes("window.print()"),"print report action wired");
 assert(html.includes('mode==="quick"'),"quick assessment remains");
 assert(html.includes('mode==="classic"'),"skip wizard remains");
