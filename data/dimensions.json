@@ -1,0 +1,74 @@
+[
+  {
+    "id": "D1",
+    "name": "Proprietary Data and Intellectual Property",
+    "questions": 10,
+    "weight": 100
+  },
+  {
+    "id": "D2",
+    "name": "Switching Costs and Customer Retention",
+    "questions": 9,
+    "weight": 90
+  },
+  {
+    "id": "D3",
+    "name": "Network Effects and Ecosystem",
+    "questions": 8,
+    "weight": 80
+  },
+  {
+    "id": "D4",
+    "name": "Financial Performance and Capital Efficiency",
+    "questions": 10,
+    "weight": 100
+  },
+  {
+    "id": "D5",
+    "name": "Market Dominance and Distribution",
+    "questions": 8,
+    "weight": 80
+  },
+  {
+    "id": "D6",
+    "name": "Technology and Innovation",
+    "questions": 9,
+    "weight": 90
+  },
+  {
+    "id": "D7",
+    "name": "Institutional Trust and Regulation",
+    "questions": 8,
+    "weight": 80
+  },
+  {
+    "id": "D8",
+    "name": "Historical Durability and Resilience",
+    "questions": 10,
+    "weight": 100
+  },
+  {
+    "id": "D9",
+    "name": "Strategic Execution and Expansion",
+    "questions": 8,
+    "weight": 80
+  },
+  {
+    "id": "D10",
+    "name": "Customer Outcomes",
+    "questions": 7,
+    "weight": 70
+  },
+  {
+    "id": "D11",
+    "name": "Access to Justice and Public Interest",
+    "questions": 7,
+    "weight": 70
+  },
+  {
+    "id": "D12",
+    "name": "Future Defensibility",
+    "questions": 6,
+    "weight": 60
+  }
+]
