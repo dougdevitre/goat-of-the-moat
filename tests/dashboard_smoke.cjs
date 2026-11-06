@@ -37,7 +37,7 @@ const integrity=fs.readFileSync("dashboard/decision-integrity.html","utf8");
 const integrityScript=integrity.match(/<script>([\s\S]*?)<\/script>/);
 assert(integrityScript,"decision-integrity script exists");
 new vm.Script(integrityScript[1],{filename:"dashboard/decision-integrity.html"});
-for(const id of ["subject","decision","purpose","alternatives","category","party","amount","state","facts","source","sourceDate","counter","reward","outcomes","metrics","gaps","entries","reportBody","relationshipMap","mapDetail","add","export","import","print","sample","clear"])assert(integrity.includes('id="'+id+'"'),"missing integrity control "+id);
+for(const id of ["subject","decision","purpose","alternatives","category","party","amount","state","facts","source","sourceDate","counter","reward","outcomes","metrics","gaps","entries","reportBody","relationshipMap","mapDetail","verifyRecord","verifyStatus","saveVerification","requestChecklist","add","export","import","print","sample","clear"])assert(integrity.includes('id="'+id+'"'),"missing integrity control "+id);
 assert(html.includes("/dashboard/decision-integrity.html"),"main dashboard links integrity review");
 assert(integrity.includes('schema_version:"decision-integrity-1.0"'),"independent review export schema");
 assert(integrity.includes("A financial relationship does not by itself establish wrongdoing"),"neutrality warning");
