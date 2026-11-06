@@ -10,6 +10,25 @@ const assert = require("node:assert/strict");
   page.on("dialog",d=>d.accept());
   const url=(process.env.BASE_URL||"http://127.0.0.1:8000")+"/dashboard/";
   try {
+    const base=process.env.BASE_URL||"http://127.0.0.1:8000";
+    for(const width of [320,375,768]){
+      await page.setViewportSize({width,height:812});
+      await page.goto(base+"/tools/",{waitUntil:"networkidle"});
+      const menu=page.locator(".goat-menu-btn");
+      assert.equal(await menu.isVisible(),true,"mobile menu visible at "+width);
+      await menu.click();
+      assert.equal(await menu.getAttribute("aria-expanded"),"true");
+      assert.equal(await page.locator("#goatMobileDrawer").isVisible(),true);
+      await page.keyboard.press("Escape");
+      assert.equal(await menu.getAttribute("aria-expanded"),"false");
+      assert.equal(await page.locator("#goatMobileDrawer").getAttribute("inert"),"");
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true,"horizontal overflow at "+width);
+    }
+    await page.setViewportSize({width:1280,height:800});
+    await page.goto(base+"/tools/",{waitUntil:"networkidle"});
+    assert.equal(await page.locator(".goat-menu-btn").isVisible(),false);
+    assert.equal(await page.locator(".goat-desktop").isVisible(),true);
+    await page.setViewportSize({width:375,height:812});
     await page.goto(url,{waitUntil:"networkidle"});
     await page.locator("#startQuick").click();
     assert.match(await page.locator("#progressText").innerText(),/Question 1 of 12/);
@@ -76,7 +95,7 @@ const assert = require("node:assert/strict");
     assert.match(await page.locator("#verificationSummary").innerText(),/Not resolved: 3/);
     await page.goto((process.env.BASE_URL||"http://127.0.0.1:8000")+"/tools/reports/",{waitUntil:"networkidle"});
     await page.locator("#loadSession").click();
-    assert.equal(await page.locator("#reportBody tbody tr").first().count(),1);
+    assert.equal(await page.locator("#reportBody tbody tr").count(),3);
     await page.locator("#forgetSession").click();
     assert.match(await page.locator("#shareStatus").innerText(),/cleared/);
     assert.equal(errors.length,0,"Browser JavaScript errors: "+errors.join("; "));
